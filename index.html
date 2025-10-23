@@ -1,0 +1,2138 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MoMo Finance Journey | 毛毛理財之旅</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 20px;
+        color: #2d3748;
+        line-height: 1.6;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .page {
+        display: none;
+      }
+
+      .page.active {
+        display: block;
+      }
+
+      /* 登錄頁面樣式 */
+      .login-container {
+        max-width: 480px;
+        margin: 40px auto;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        padding: 50px 40px;
+        border-radius: 24px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+
+      .logo-section {
+        margin-bottom: 40px;
+      }
+
+      .momo-character {
+        font-size: 4em;
+        margin-bottom: 15px;
+        animation: bounce 2s infinite;
+      }
+
+      @keyframes bounce {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      .logo-section h1 {
+        color: #2d3748;
+        margin-bottom: 8px;
+        font-size: 2.2em;
+        font-weight: 700;
+      }
+
+      .tagline {
+        color: #718096;
+        font-size: 1.1em;
+        font-weight: 500;
+      }
+
+      .login-form {
+        margin-bottom: 30px;
+      }
+
+      .input-group {
+        margin-bottom: 25px;
+        text-align: left;
+      }
+
+      .input-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #2d3748;
+        font-weight: 600;
+        font-size: 0.95em;
+      }
+
+      .input-group input {
+        width: 100%;
+        padding: 15px 20px;
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        background: white;
+      }
+
+      .input-group input:focus {
+        border-color: #667eea;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        transform: translateY(-2px);
+      }
+
+      .primary-btn {
+        width: 100%;
+        padding: 18px;
+        background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+        color: white;
+        border: none;
+        border-radius: 16px;
+        font-size: 18px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        box-shadow: 0 8px 20px rgba(255, 107, 107, 0.3);
+      }
+
+      .primary-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 25px rgba(255, 107, 107, 0.4);
+      }
+
+      .btn-icon {
+        font-size: 1.2em;
+      }
+
+      /* 遊戲頁面樣式 */
+      .game-header {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        padding: 20px 30px;
+        border-radius: 20px;
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+      }
+
+      .player-info {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .player-avatar {
+        font-size: 2.5em;
+      }
+
+      .player-details {
+        flex: 1;
+      }
+
+      .player-details h2 {
+        color: #2d3748;
+        margin-bottom: 4px;
+        font-size: 1.4em;
+      }
+
+      .player-details p {
+        color: #718096;
+        font-size: 0.9em;
+      }
+
+      .game-controls {
+        text-align: center;
+      }
+
+      .control-group {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .progress-info {
+        background: rgba(255, 255, 255, 0.9);
+        padding: 12px 20px;
+        border-radius: 12px;
+        text-align: center;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      .location {
+        font-weight: 600;
+        color: #2d3748;
+        margin-bottom: 5px;
+        font-size: 1em;
+      }
+
+      .total-assets {
+        font-weight: 700;
+        color: #d63031;
+        font-size: 1.3em;
+      }
+
+      .savings-info {
+        font-weight: 600;
+        color: #2d3748;
+        font-size: 1em;
+      }
+
+      .day-info {
+        font-weight: 600;
+        color: #2d3748;
+        font-size: 1em;
+      }
+
+      /* 遊戲地圖樣式 */
+      .game-board {
+        background: rgba(255, 255, 255, 0.95);
+        padding: 20px;
+        border-radius: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        min-height: 600px;
+        position: relative;
+      }
+
+      .map-container {
+        position: relative;
+        width: 100%;
+        height: 550px;
+        background: linear-gradient(135deg, #e3f2fd, #f3e5f5);
+        border-radius: 16px;
+        overflow: hidden;
+        border: 3px solid #90caf9;
+      }
+
+      .railway-map {
+        position: relative;
+        width: 100%;
+        height: 100%;
+      }
+
+      /* 鐵路線路樣式 */
+      .rail-lines {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+
+      .rail-line {
+        position: absolute;
+        height: 8px;
+        transform-origin: 0 0;
+        z-index: 1;
+      }
+
+      /* 車站標記樣式 */
+      .stations {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+
+      .station-marker {
+        position: absolute;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        z-index: 10;
+        transition: all 0.3s ease;
+      }
+
+      .station-dot {
+        width: 24px;
+        height: 24px;
+        background: #333;
+        border-radius: 50%;
+        margin: 0 auto 3px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        border: 3px solid white;
+        transition: all 0.3s ease;
+      }
+
+      .station-name {
+        font-size: 8px;
+        font-weight: 600;
+        color: #333;
+        background: rgba(255, 255, 255, 0.9);
+        padding: 2px 4px;
+        border-radius: 6px;
+        white-space: nowrap;
+      }
+
+      /* ===== 玩家資訊面板樣式 ===== */
+      .player-info-section {
+        padding: 15px;
+        background: rgba(255, 255, 255, 0.98);
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .info-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        margin-top: 12px;
+      }
+
+      .info-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 12px;
+        background: rgba(247, 250, 252, 0.8);
+        border-radius: 8px;
+        font-size: 0.95em;
+        transition: all 0.3s ease;
+      }
+
+      .info-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .info-label {
+        color: #4a5568;
+        font-weight: 600;
+      }
+
+      .info-value {
+        color: #2d3748;
+        font-weight: 700;
+      }
+
+      /* 當前車站樣式 */
+      .station-marker.current .station-dot {
+        background: #ff6b6b;
+        border-color: #fff;
+        box-shadow: 0 0 15px rgba(255, 107, 107, 0.8);
+        animation: pulse 2s infinite;
+        transform: scale(1.2);
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1.2);
+        }
+        50% {
+          transform: scale(1.5);
+        }
+        100% {
+          transform: scale(1.2);
+        }
+      }
+
+      /* 玩家圖標樣式 */
+      .player-icon {
+        position: absolute;
+        font-size: 24px;
+        transform: translate(-50%, -50%);
+        z-index: 1000;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+        transition: all 1s ease-in-out;
+        display: none;
+      }
+
+      /* 操作按鈕組樣式 */
+      .simple-actions {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        margin-top: 20px;
+      }
+
+      .action-btn {
+        padding: 15px;
+        background: linear-gradient(135deg, #a8e6cf, #88d4ab);
+        color: #2d3748;
+        border: none;
+        border-radius: 12px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        box-shadow: 0 4px 12px rgba(168, 230, 207, 0.3);
+      }
+
+      .action-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(168, 230, 207, 0.4);
+      }
+
+      .action-btn.secondary {
+        background: linear-gradient(135deg, #ffeaa7, #fdcb6e);
+      }
+
+      /* 事件彈窗樣式 */
+      .event-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 2000;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .event-modal.active {
+        display: flex;
+      }
+
+      .event-content {
+        background: white;
+        padding: 30px;
+        border-radius: 20px;
+        max-width: 500px;
+        width: 90%;
+        text-align: center;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      }
+
+      .event-emoji {
+        font-size: 4em;
+        margin-bottom: 20px;
+      }
+
+      .event-title {
+        font-size: 1.5em;
+        font-weight: 700;
+        margin-bottom: 15px;
+        color: #2d3748;
+      }
+
+      .event-message {
+        margin-bottom: 25px;
+        line-height: 1.6;
+        color: #4a5568;
+      }
+
+      .event-choices {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        flex-direction: column;
+      }
+
+      .choice-btn {
+        padding: 12px 24px;
+        border: none;
+        border-radius: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .choice-btn.primary {
+        background: #48bb78;
+        color: white;
+      }
+
+      .choice-btn.secondary {
+        background: #e53e3e;
+        color: white;
+      }
+
+      .choice-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      }
+
+      /* 響應式設計 */
+      @media (max-width: 768px) {
+        body {
+          padding: 10px;
+        }
+
+        .login-container {
+          margin: 20px auto;
+          padding: 30px 25px;
+        }
+
+        .game-header {
+          flex-direction: column;
+          gap: 20px;
+          text-align: center;
+        }
+
+        .player-info {
+          justify-content: center;
+        }
+
+        .game-board {
+          min-height: 500px;
+          padding: 20px;
+        }
+
+        .map-container {
+          height: 450px;
+        }
+
+        .station-dot {
+          width: 20px;
+          height: 20px;
+        }
+
+        .station-name {
+          font-size: 7px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .login-container {
+          margin: 10px auto;
+          padding: 25px 20px;
+        }
+
+        .momo-character {
+          font-size: 3em;
+        }
+
+        .logo-section h1 {
+          font-size: 1.8em;
+        }
+
+        .game-board {
+          min-height: 400px;
+          padding: 15px;
+        }
+
+        .map-container {
+          height: 350px;
+        }
+
+        .station-dot {
+          width: 16px;
+          height: 16px;
+        }
+
+        .station-name {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- 登錄界面 -->
+      <div id="login-page" class="page active">
+        <div class="login-container">
+          <div class="logo-section">
+            <div class="momo-character">🐱</div>
+            <h1>MoMo Finance Journey<br />毛毛理財之旅</h1>
+            <p class="tagline">Learn Financial Skills • 學習理財技能</p>
+          </div>
+          <div class="login-form">
+            <div class="input-group">
+              <label for="studentId">Student ID 學生ID</label>
+              <input
+                type="text"
+                id="studentId"
+                placeholder="Enter your student ID 輸入學生ID"
+                required
+              />
+            </div>
+            <div class="input-group">
+              <label for="playerNickname">Nickname 暱稱</label>
+              <input
+                type="text"
+                id="playerNickname"
+                placeholder="Choose a nickname 選擇暱稱"
+                required
+              />
+            </div>
+            <button id="startGameBtn" class="primary-btn">
+              <span class="btn-icon">🚀</span>
+              開始遊戲 Start Game
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 遊戲主界面 -->
+      <div id="game-page" class="page">
+        <div class="game-header">
+          <div class="player-info">
+            <div class="player-avatar">🐱</div>
+            <div class="player-details">
+              <h2 id="displayNickname">Player</h2>
+              <p>ID: <span id="displayStudentId">-</span></p>
+              <!-- 玩家資訊面板 -->
+              <div class="player-info-section">
+                <div class="info-grid">
+                  <div class="info-item">
+                    <span class="info-label">📊 當前資產：</span>
+                    <span class="info-value" id="infoTotalAssets">$1,000</span>
+                  </div>
+                  <div class="info-item">
+                    <span class="info-label">📅 遊戲天數：</span>
+                    <span class="info-value" id="infoCurrentDay">第 1 天</span>
+                  </div>
+                  <div class="info-item">
+                    <span class="info-label">🚉 當前車站：</span>
+                    <span class="info-value" id="infoCurrentStation">-</span>
+                  </div>
+                  <div class="info-item">
+                    <span class="info-label">💹 物價指數：</span>
+                    <span class="info-value" id="infoPriceIndex">1.000</span>
+                  </div>
+                  <div class="info-item">
+                    <span class="info-label">💰 今日儲蓄：</span>
+                    <span class="info-value" id="infoDailySavings">$1</span>
+                  </div>
+                  <div class="info-item">
+                    <span class="info-label">🎉 累積獲得：</span>
+                    <span class="info-value" id="infoCumulativeGains">$0</span>
+                  </div>
+                  <div class="info-item">
+                    <span class="info-label">📈 總投資：</span>
+                    <span class="info-value" id="infoTotalInvestment">$0</span>
+                  </div>
+                  <div class="info-item">
+                    <span class="info-label">🏦 累積儲蓄：</span>
+                    <span class="info-value" id="infoTotalSavings">$0</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="game-controls">
+            <div class="control-group">
+              <button id="nextDayBtn" class="primary-btn">
+                <span class="btn-icon">⏭️</span>
+                <span class="btn-text">下一天 Next Day</span>
+              </button>
+              <div class="progress-info">
+                <div class="day-info">
+                  📅 第 <span id="currentDay">1</span> 天 |
+                  <span id="currentDate">2025-10-12 星期日</span>
+                </div>
+                <div class="location">
+                  📍 <span id="currentStation">-</span>
+                </div>
+                <div class="total-assets">
+                  💰 總資產：$<span id="totalAssets">1,000</span>
+                </div>
+                <div class="savings-info">
+                  💾 今日儲蓄：$<span id="dailySavings">1</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="game-board">
+          <div class="map-container">
+            <div class="railway-map" id="railway-map">
+              <!-- 鐵路線路和車站將通過JavaScript動態生成 -->
+            </div>
+            <div class="player-icon" id="player-icon">🐱</div>
+          </div>
+        </div>
+
+        <div class="simple-actions">
+          <button id="newGameBtn" class="action-btn secondary">
+            <span class="btn-icon">🔄</span>
+            重新遊戲 Restart
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 事件彈窗 -->
+    <div id="eventModal" class="event-modal">
+      <div class="event-content">
+        <div class="event-emoji" id="eventEmoji">🎯</div>
+        <h3 class="event-title" id="eventTitle">事件標題</h3>
+        <p class="event-message" id="eventMessage">事件描述內容...</p>
+        <div class="event-choices" id="eventChoices">
+          <!-- 選擇按鈕將通過JavaScript動態生成 -->
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // 遊戲數據
+      const gameBoard = {
+        // 地鐵線路顏色對照表
+        lineColors: {
+          twl: "#e60012", // 荃灣線 紅色
+          tw: "#880022", // 屯馬線 酒紅色
+          ktl: "#009944", // 觀塘線 綠色
+          erl: "#0072bc", // 東鐵線 藍色
+          il: "#003d79", // 港島線 藏青色
+          tkl: "#a864a8", // 將軍澳線 紫色
+          tcl: "#f8a800", // 東涌線 橙色
+        },
+
+        // 車站數據
+        stations: {
+          // === 屯馬線 ===
+          "Tuen Mun 屯門": { x: 2, y: 30, line: "tw" },
+          "Siu Hong 兆康": { x: 2, y: 20, line: "tw" },
+          "Tin Shui Wai 天水圍": { x: 2, y: 10, line: "tw" },
+          "Long Ping 朗屏": { x: 7, y: 10, line: "tw" },
+          "Yuen Long 元朗": { x: 15, y: 10, line: "tw" },
+          "Kam Sheung Road 錦上路": { x: 15, y: 10, line: "tw" },
+          "Tsuen Wan West 荃灣西": { x: 25, y: 15, line: "tw" },
+          "Mei Foo 美孚": { x: 30, y: 35, line: "tw" },
+          "Nam Cheong 南昌": { x: 35, y: 40, line: "tw" },
+          "Austin 柯士甸": { x: 40, y: 60, line: "tw" },
+          "East Tsim Sha Tsui 尖東": { x: 50, y: 75, line: "tw" },
+          "Hung Hom 紅磡": { x: 60, y: 65, line: "tw" },
+          "Ho Man Tin 何文田": { x: 65, y: 60, line: "tw" },
+          "Sung Wong Toi 宋皇臺": { x: 75, y: 50, line: "tw" },
+          "To Kwa Wan 土瓜灣": { x: 80, y: 40, line: "tw" },
+          "Kai Tak 啟德": { x: 85, y: 30, line: "tw" },
+          "Diamond Hill 鑽石山": { x: 80, y: 30, line: "tw" },
+          "Hin Keng 顯徑": { x: 60, y: 25, line: "tw" },
+          "Tai Wai 大圍": { x: 55, y: 20, line: "tw" },
+          "Che Kung Temple 車公廟": { x: 70, y: 20, line: "tw" },
+          "Sha Tin Wai 沙田圍": { x: 75, y: 20, line: "tw" },
+          "City One 第一城": { x: 80, y: 20, line: "tw" },
+          "Shek Mun 石門": { x: 85, y: 15, line: "tw" },
+          "Tai Shui Hang 大水坑": { x: 85, y: 10, line: "tw" },
+          "Heng On 恒安": { x: 85, y: 5, line: "tw" },
+          "Ma On Shan 馬鞍山": { x: 90, y: 5, line: "tw" },
+          "Wu Kai Sha 烏溪沙": { x: 95, y: 5, line: "tw" },
+
+          // === 東涌線 ===
+          "Tung Chung 東涌": { x: 10, y: 80, line: "tcl" },
+          "Sunny Bay 欣澳": { x: 15, y: 70, line: "tcl" },
+          "Tsing Yi 青衣": { x: 20, y: 45, line: "tcl" },
+          "Lai King 荔景": { x: 25, y: 35, line: "tcl" },
+          "Nam Cheong 南昌": { x: 35, y: 45, line: "tcl" },
+          "Olympic 奧運": { x: 35, y: 55, line: "tcl" },
+          "Kowloon 九龍": { x: 35, y: 65, line: "tcl" },
+          "Hong Kong 香港": { x: 30, y: 80, line: "tcl" },
+
+          // === 荃灣線 ===
+          "Tsuen Wan 荃灣": { x: 8, y: 25, line: "twl" },
+          "Tai Wo Hau 大窩口": { x: 15, y: 25, line: "twl" },
+          "Kwai Hing 葵興": { x: 20, y: 25, line: "twl" },
+          "Kwai Fong 葵芳": { x: 25, y: 25, line: "twl" },
+          "Lai King 荔景": { x: 25, y: 35, line: "twl" },
+          "Mei Foo 美孚": { x: 30, y: 35, line: "twl" },
+          "Lai Chi Kok 荔枝角": { x: 38, y: 35, line: "twl" },
+          "Cheung Sha Wan 長沙灣": { x: 43, y: 35, line: "twl" },
+          "Sham Shui Po 深水埗": { x: 48, y: 35, line: "twl" },
+          "Prince Edward 太子": { x: 53, y: 35, line: "twl" },
+          "Mong Kok 旺角": { x: 53, y: 45, line: "twl" },
+          "Yau Ma Tei 油麻地": { x: 53, y: 55, line: "twl" },
+          "Jordan 佐敦": { x: 48, y: 65, line: "twl" },
+          "Tsim Sha Tsui 尖沙咀": { x: 43, y: 75, line: "twl" },
+          "Admiralty 金鐘": { x: 35, y: 85, line: "twl" },
+          "Central 中環": { x: 30, y: 85, line: "twl" },
+
+          // === 港島線 ===
+          "Kennedy Town 堅尼地城": { x: 5, y: 93, line: "il" },
+          "HKU 香港大學": { x: 10, y: 90, line: "il" },
+          "Sai Ying Pun 西營盤": { x: 15, y: 85, line: "il" },
+          "Sheung Wan 上環": { x: 20, y: 85, line: "il" },
+          "Central 中環": { x: 30, y: 85, line: "il" },
+          "Admiralty 金鐘": { x: 35, y: 85, line: "il" },
+          "Wan Chai 灣仔": { x: 40, y: 85, line: "il" },
+          "Causeway Bay 銅鑼灣": { x: 45, y: 85, line: "il" },
+          "Tin Hau 天后": { x: 50, y: 85, line: "il" },
+          "Fortress Hill 炮台山": { x: 55, y: 85, line: "il" },
+          "North Point 北角": { x: 65, y: 85, line: "il" },
+          "Quarry Bay 鰂魚涌": { x: 70, y: 85, line: "il" },
+          "Tai Koo 太古": { x: 75, y: 85, line: "il" },
+          "Sai Wan Ho 西灣河": { x: 80, y: 85, line: "il" },
+          "Shau Kei Wan 筲箕灣": { x: 85, y: 85, line: "il" },
+          "Heng Fa Chuen 杏花邨": { x: 90, y: 90, line: "il" },
+          "Chai Wan 柴灣": { x: 95, y: 95, line: "il" },
+
+          // === 東鐵線 ===
+          "Lok Ma Chau 落馬洲": { x: 25, y: 5, line: "erl" },
+          "Sheung Shui 上水": { x: 30, y: 5, line: "erl" },
+          "Fanling 粉嶺": { x: 35, y: 5, line: "erl" },
+          "Tai Wo 太和": { x: 40, y: 5, line: "erl" },
+          "Tai Po Market 大埔墟": { x: 45, y: 5, line: "erl" },
+          "University 大學": { x: 50, y: 5, line: "erl" },
+          "Fo Tan 火炭": { x: 55, y: 10, line: "erl" },
+          "Sha Tin 沙田": { x: 55, y: 15, line: "erl" },
+          "Tai Wai 大圍": { x: 55, y: 20, line: "erl" },
+          "Kowloon Tong 九龍塘": { x: 60, y: 30, line: "erl" },
+          "Mong Kok East 旺角東": { x: 60, y: 45, line: "erl" },
+          "Hung Hom 紅磡": { x: 60, y: 65, line: "erl" },
+          "Exhibition Centre 會展": { x: 50, y: 80, line: "erl" },
+          "Admiralty 金鐘": { x: 35, y: 85, line: "erl" },
+
+          // === 觀塘線 ===
+          "Whampoa 黃埔": { x: 70, y: 70, line: "ktl" },
+          "Ho Man Tin 何文田": { x: 65, y: 60, line: "ktl" },
+          "Yau Ma Tei 油麻地": { x: 53, y: 55, line: "ktl" },
+          "Mong Kok 旺角": { x: 53, y: 45, line: "ktl" },
+          "Prince Edward 太子": { x: 53, y: 35, line: "ktl" },
+          "Shek Kip Mei 石硤尾": { x: 55, y: 30, line: "ktl" },
+          "Kowloon Tong 九龍塘": { x: 60, y: 30, line: "ktl" },
+          "Lok Fu 樂富": { x: 70, y: 30, line: "ktl" },
+          "Wong Tai Sin 黃大仙": { x: 75, y: 30, line: "ktl" },
+          "Diamond Hill 鑽石山": { x: 80, y: 30, line: "ktl" },
+          "Choi Hung 彩虹": { x: 85, y: 30, line: "ktl" },
+          "Kowloon Bay 九龍灣": { x: 90, y: 35, line: "ktl" },
+          "Ngau Tau Kok 牛頭角": { x: 90, y: 45, line: "ktl" },
+          "Kwun Tong 觀塘": { x: 90, y: 55, line: "ktl" },
+          "Lam Tin 藍田": { x: 90, y: 65, line: "ktl" },
+          "Yau Tong 油塘": { x: 90, y: 75, line: "ktl" },
+          "Tiu Keng Leng 調景嶺": { x: 90, y: 75, line: "ktl" },
+
+          // === 將軍澳線 ===
+          "North Point 北角": { x: 65, y: 85, line: "tkl" },
+          "Quarry Bay 鰂魚涌": { x: 70, y: 85, line: "tkl" },
+          "Yau Tong 油塘": { x: 90, y: 75, line: "tkl" },
+          "Tiu Keng Leng 調景嶺": { x: 90, y: 75, line: "tkl" },
+          "Tseung Kwan O 將軍澳": { x: 95, y: 75, line: "tkl" },
+          "Hang Hau 坑口": { x: 95, y: 65, line: "tkl" },
+          "Po Lam 寶琳": { x: 95, y: 55, line: "tkl" },
+          "LOHAS Park 康城": { x: 95, y: 50, line: "tkl" },
+        },
+
+        // 線路連接關係
+        connections: [
+          // 屯馬線
+          { from: "Tuen Mun 屯門", to: "Siu Hong 兆康", line: "tw" },
+          { from: "Siu Hong 兆康", to: "Tin Shui Wai 天水圍", line: "tw" },
+          { from: "Tin Shui Wai 天水圍", to: "Long Ping 朗屏", line: "tw" },
+          { from: "Long Ping 朗屏", to: "Yuen Long 元朗", line: "tw" },
+          { from: "Yuen Long 元朗", to: "Kam Sheung Road 錦上路", line: "tw" },
+          {
+            from: "Kam Sheung Road 錦上路",
+            to: "Tsuen Wan West 荃灣西",
+            line: "tw",
+          },
+          { from: "Tsuen Wan West 荃灣西", to: "Mei Foo 美孚", line: "tw" },
+          { from: "Mei Foo 美孚", to: "Nam Cheong 南昌", line: "tw" },
+          { from: "Nam Cheong 南昌", to: "Austin 柯士甸", line: "tw" },
+          { from: "Austin 柯士甸", to: "East Tsim Sha Tsui 尖東", line: "tw" },
+          { from: "East Tsim Sha Tsui 尖東", to: "Hung Hom 紅磡", line: "tw" },
+          { from: "Hung Hom 紅磡", to: "Ho Man Tin 何文田", line: "tw" },
+          { from: "Ho Man Tin 何文田", to: "Sung Wong Toi 宋皇臺", line: "tw" },
+          { from: "Sung Wong Toi 宋皇臺", to: "To Kwa Wan 土瓜灣", line: "tw" },
+          { from: "To Kwa Wan 土瓜灣", to: "Kai Tak 啟德", line: "tw" },
+          { from: "Kai Tak 啟德", to: "Diamond Hill 鑽石山", line: "tw" },
+          { from: "Diamond Hill 鑽石山", to: "Hin Keng 顯徑", line: "tw" },
+          { from: "Hin Keng 顯徑", to: "Tai Wai 大圍", line: "tw" },
+          { from: "Tai Wai 大圍", to: "Che Kung Temple 車公廟", line: "tw" },
+          {
+            from: "Che Kung Temple 車公廟",
+            to: "Sha Tin Wai 沙田圍",
+            line: "tw",
+          },
+          { from: "Sha Tin Wai 沙田圍", to: "City One 第一城", line: "tw" },
+          { from: "City One 第一城", to: "Shek Mun 石門", line: "tw" },
+          { from: "Shek Mun 石門", to: "Tai Shui Hang 大水坑", line: "tw" },
+          { from: "Tai Shui Hang 大水坑", to: "Heng On 恒安", line: "tw" },
+          { from: "Heng On 恒安", to: "Ma On Shan 馬鞍山", line: "tw" },
+          { from: "Ma On Shan 馬鞍山", to: "Wu Kai Sha 烏溪沙", line: "tw" },
+
+          // 東涌線
+          { from: "Tung Chung 東涌", to: "Sunny Bay 欣澳", line: "tcl" },
+          { from: "Sunny Bay 欣澳", to: "Tsing Yi 青衣", line: "tcl" },
+          { from: "Tsing Yi 青衣", to: "Lai King 荔景", line: "tcl" },
+          { from: "Lai King 荔景", to: "Nam Cheong 南昌", line: "tcl" },
+          { from: "Nam Cheong 南昌", to: "Olympic 奧運", line: "tcl" },
+          { from: "Olympic 奧運", to: "Kowloon 九龍", line: "tcl" },
+          { from: "Kowloon 九龍", to: "Hong Kong 香港", line: "tcl" },
+
+          // 荃灣線
+          { from: "Tsuen Wan 荃灣", to: "Tai Wo Hau 大窩口", line: "twl" },
+          { from: "Tai Wo Hau 大窩口", to: "Kwai Hing 葵興", line: "twl" },
+          { from: "Kwai Hing 葵興", to: "Kwai Fong 葵芳", line: "twl" },
+          { from: "Kwai Fong 葵芳", to: "Lai King 荔景", line: "twl" },
+          { from: "Lai King 荔景", to: "Mei Foo 美孚", line: "twl" },
+          { from: "Mei Foo 美孚", to: "Lai Chi Kok 荔枝角", line: "twl" },
+          {
+            from: "Lai Chi Kok 荔枝角",
+            to: "Cheung Sha Wan 長沙灣",
+            line: "twl",
+          },
+          {
+            from: "Cheung Sha Wan 長沙灣",
+            to: "Sham Shui Po 深水埗",
+            line: "twl",
+          },
+          {
+            from: "Sham Shui Po 深水埗",
+            to: "Prince Edward 太子",
+            line: "twl",
+          },
+          { from: "Prince Edward 太子", to: "Mong Kok 旺角", line: "twl" },
+          { from: "Mong Kok 旺角", to: "Yau Ma Tei 油麻地", line: "twl" },
+          { from: "Yau Ma Tei 油麻地", to: "Jordan 佐敦", line: "twl" },
+          { from: "Jordan 佐敦", to: "Tsim Sha Tsui 尖沙咀", line: "twl" },
+          { from: "Tsim Sha Tsui 尖沙咀", to: "Admiralty 金鐘", line: "twl" },
+          { from: "Admiralty 金鐘", to: "Central 中環", line: "twl" },
+
+          // 港島線
+          { from: "Kennedy Town 堅尼地城", to: "HKU 香港大學", line: "il" },
+          { from: "HKU 香港大學", to: "Sai Ying Pun 西營盤", line: "il" },
+          { from: "Sai Ying Pun 西營盤", to: "Sheung Wan 上環", line: "il" },
+          { from: "Sheung Wan 上環", to: "Central 中環", line: "il" },
+          { from: "Central 中環", to: "Admiralty 金鐘", line: "il" },
+          { from: "Admiralty 金鐘", to: "Wan Chai 灣仔", line: "il" },
+          { from: "Wan Chai 灣仔", to: "Causeway Bay 銅鑼灣", line: "il" },
+          { from: "Causeway Bay 銅鑼灣", to: "Tin Hau 天后", line: "il" },
+          { from: "Tin Hau 天后", to: "Fortress Hill 炮台山", line: "il" },
+          { from: "Fortress Hill 炮台山", to: "North Point 北角", line: "il" },
+          { from: "North Point 北角", to: "Quarry Bay 鰂魚涌", line: "il" },
+          { from: "Quarry Bay 鰂魚涌", to: "Tai Koo 太古", line: "il" },
+          { from: "Tai Koo 太古", to: "Sai Wan Ho 西灣河", line: "il" },
+          { from: "Sai Wan Ho 西灣河", to: "Shau Kei Wan 筲箕灣", line: "il" },
+          {
+            from: "Shau Kei Wan 筲箕灣",
+            to: "Heng Fa Chuen 杏花邨",
+            line: "il",
+          },
+          { from: "Heng Fa Chuen 杏花邨", to: "Chai Wan 柴灣", line: "il" },
+
+          // 東鐵線
+          { from: "Lok Ma Chau 落馬洲", to: "Sheung Shui 上水", line: "erl" },
+          { from: "Sheung Shui 上水", to: "Fanling 粉嶺", line: "erl" },
+          { from: "Fanling 粉嶺", to: "Tai Wo 太和", line: "erl" },
+          { from: "Tai Wo 太和", to: "Tai Po Market 大埔墟", line: "erl" },
+          { from: "Tai Po Market 大埔墟", to: "University 大學", line: "erl" },
+          { from: "University 大學", to: "Fo Tan 火炭", line: "erl" },
+          { from: "Fo Tan 火炭", to: "Sha Tin 沙田", line: "erl" },
+          { from: "Sha Tin 沙田", to: "Tai Wai 大圍", line: "erl" },
+          { from: "Tai Wai 大圍", to: "Kowloon Tong 九龍塘", line: "erl" },
+          {
+            from: "Kowloon Tong 九龍塘",
+            to: "Mong Kok East 旺角東",
+            line: "erl",
+          },
+          { from: "Mong Kok East 旺角東", to: "Hung Hom 紅磡", line: "erl" },
+          { from: "Hung Hom 紅磡", to: "Exhibition Centre 會展", line: "erl" },
+          { from: "Exhibition Centre 會展", to: "Admiralty 金鐘", line: "erl" },
+
+          // 將軍澳線
+          { from: "LOHAS Park 康城", to: "Po Lam 寶琳", line: "tkl" },
+          { from: "Po Lam 寶琳", to: "Hang Hau 坑口", line: "tkl" },
+          { from: "Hang Hau 坑口", to: "Tseung Kwan O 將軍澳", line: "tkl" },
+          {
+            from: "Tseung Kwan O 將軍澳",
+            to: "Tiu Keng Leng 調景嶺",
+            line: "tkl",
+          },
+          { from: "Tiu Keng Leng 調景嶺", to: "Yau Tong 油塘", line: "tkl" },
+          { from: "Yau Tong 油塘", to: "Quarry Bay 鰂魚涌", line: "tkl" },
+          { from: "Quarry Bay 鰂魚涌", to: "North Point 北角", line: "tkl" },
+
+          // 觀塘線
+          { from: "Whampoa 黃埔", to: "Ho Man Tin 何文田", line: "ktl" },
+          { from: "Ho Man Tin 何文田", to: "Yau Ma Tei 油麻地", line: "ktl" },
+          { from: "Yau Ma Tei 油麻地", to: "Mong Kok 旺角", line: "ktl" },
+          { from: "Mong Kok 旺角", to: "Prince Edward 太子", line: "ktl" },
+          {
+            from: "Prince Edward 太子",
+            to: "Shek Kip Mei 石硤尾",
+            line: "ktl",
+          },
+          {
+            from: "Shek Kip Mei 石硤尾",
+            to: "Kowloon Tong 九龍塘",
+            line: "ktl",
+          },
+          { from: "Kowloon Tong 九龍塘", to: "Lok Fu 樂富", line: "ktl" },
+          { from: "Lok Fu 樂富", to: "Wong Tai Sin 黃大仙", line: "ktl" },
+          {
+            from: "Wong Tai Sin 黃大仙",
+            to: "Diamond Hill 鑽石山",
+            line: "ktl",
+          },
+          { from: "Diamond Hill 鑽石山", to: "Choi Hung 彩虹", line: "ktl" },
+          { from: "Choi Hung 彩虹", to: "Kowloon Bay 九龍灣", line: "ktl" },
+          {
+            from: "Kowloon Bay 九龍灣",
+            to: "Ngau Tau Kok 牛頭角",
+            line: "ktl",
+          },
+          { from: "Ngau Tau Kok 牛頭角", to: "Kwun Tong 觀塘", line: "ktl" },
+          { from: "Kwun Tong 觀塘", to: "Lam Tin 藍田", line: "ktl" },
+          { from: "Lam Tin 藍田", to: "Yau Tong 油塘", line: "ktl" },
+          { from: "Yau Tong 油塘", to: "Tiu Keng Leng 調景嶺", line: "ktl" },
+        ],
+
+        // 獲取相鄰車站
+        getConnectedStations(stationName) {
+          const connected = [];
+          this.connections.forEach((conn) => {
+            if (conn.from === stationName) {
+              connected.push(conn.to);
+            } else if (conn.to === stationName) {
+              connected.push(conn.from);
+            }
+          });
+          return connected;
+        },
+
+        // 獲取此車站可使用的路線 (從 connections 推導)
+        getLinesAtStation(stationName) {
+          const lines = new Set();
+          this.connections.forEach((conn) => {
+            if (conn.from === stationName || conn.to === stationName) {
+              if (conn.line) lines.add(conn.line);
+            }
+          });
+          return Array.from(lines);
+        },
+
+        // 判斷一個站是否為換乘站（有多於一條路線經過）
+        isInterchange(stationName) {
+          return this.getLinesAtStation(stationName).length > 1;
+        },
+
+        // 在指定路線上，獲取與 station 相連的相鄰車站（雙向）
+        getAdjacentStationsOnLine(stationName, lineCode) {
+          const neighbors = [];
+          this.connections.forEach((conn) => {
+            if (conn.line !== lineCode) return;
+            if (conn.from === stationName) neighbors.push(conn.to);
+            else if (conn.to === stationName) neighbors.push(conn.from);
+          });
+          return neighbors;
+        },
+
+        // 取得指定路線的有序站點序列（嘗試根據 connections 邏輯還原順序）
+        getLineSequence(lineCode) {
+          // 建立該路線上的鄰接表
+          const adj = {};
+          this.connections.forEach((conn) => {
+            if (conn.line !== lineCode) return;
+            adj[conn.from] = adj[conn.from] || new Set();
+            adj[conn.to] = adj[conn.to] || new Set();
+            adj[conn.from].add(conn.to);
+            adj[conn.to].add(conn.from);
+          });
+
+          const nodes = Object.keys(adj);
+          if (nodes.length === 0) return [];
+
+          // 找到一個端點（degree 1）作為起點，若找不到就任取一個
+          let start = nodes.find((n) => adj[n].size === 1) || nodes[0];
+
+          const seq = [];
+          const visited = new Set();
+          let current = start;
+          let prev = null;
+          while (current && !visited.has(current)) {
+            seq.push(current);
+            visited.add(current);
+            const neighbors = Array.from(adj[current]).filter(
+              (x) => x !== prev
+            );
+            if (neighbors.length > 0) {
+              prev = current;
+              current = neighbors[0];
+            } else {
+              break;
+            }
+          }
+          return seq;
+        },
+
+        // 獲取車站信息
+        getStation(stationName) {
+          return this.stations[stationName];
+        },
+
+        // 獲取隨機起始站
+        getRandomStart() {
+          const startingStations = [
+            "Tsuen Wan 荃灣",
+            "Tuen Mun 屯門",
+            "Tung Chung 東涌",
+            "Lok Ma Chau 落馬洲",
+            "Kennedy Town 堅尼地城",
+          ];
+          const randomIndex = Math.floor(
+            Math.random() * startingStations.length
+          );
+          return startingStations[randomIndex];
+        },
+      };
+
+      // 遊戲主類
+      class FinanceGame {
+        constructor(studentId, nickname) {
+          this.studentId = studentId;
+          this.nickname = nickname;
+
+          // 遊戲時間設置
+          this.startDate = new Date(2025, 9, 12); // 2025年10月12日
+          this.currentDate = new Date(2025, 9, 12);
+          this.currentDay = 1;
+          this.totalDays = 365;
+
+          this.previousStation = null;
+          this.visitedStations = new Set();
+          this.stationHistory = []; // 記錄移動歷史
+
+          // 玩家狀態
+          this.player = {
+            name: nickname,
+            assets: 500,
+            currentStation: gameBoard.getRandomStart(),
+            // 初始化時，如果該站有多條線，預設取第一條
+            line: null,
+            // direction: 1 = forward, -1 = backward
+            direction: 1,
+            dailySavings: 1,
+            weeklyAllowance: 300,
+            totalSavings: 0,
+            // 累積獲得金額（包含儲蓄、零用錢、投資收益與其他正向 effect）
+            cumulativeGains: 0,
+            weeklyAllowanceReceived: false,
+            // 投資相關
+            investment: 0, // 目前投資的總金額
+            lastInvestmentDay: 0, // 上次投資的遊戲天數
+          };
+
+          // 初始化玩家線路（取該站可用的第一條線）
+          const startLines = gameBoard.getLinesAtStation(
+            this.player.currentStation
+          );
+          this.player.line =
+            startLines.length > 0
+              ? startLines[0]
+              : this.getLineFromStation(this.player.currentStation);
+
+          // 記錄起始站
+          this.visitedStations.add(this.player.currentStation);
+          this.stationHistory.push(this.player.currentStation);
+
+          // 物價指數
+          this.priceIndex = {
+            tw: 1.015, // 屯馬線 1.5%
+            twl: 1.03, // 荃灣線 3%
+            tcl: 1.05, // 東涌線 5%
+            erl: 1.07, // 東鐵線 7%
+            ktl: 1.09, // 觀塘線 9%
+            tkl: 1.09, // 將軍澳線 9%
+            il: 1.1, // 港島線 10%
+          };
+
+          // 好事件庫
+          this.goodEvents = [
+            {
+              title: "� Tutoring 補習收入",
+              message:
+                "You earned money from tutoring!\n你從補習賺到了額外收入！",
+              effect: { cash: 200 },
+            },
+            {
+              title: "🎯 Part-time Job 兼職收入",
+              message:
+                "You got paid from your part-time job!\n你收到兼職薪水！",
+              effect: { cash: 250 },
+            },
+            {
+              title: "🎁 Red Packet 收到紅包",
+              message: "You received a red packet!\n你收到了紅包！",
+              effect: { cash: 100 },
+            },
+            {
+              title: "💼 Freelance Work 自由接案",
+              message:
+                "You completed a freelance project!\n你完成了一個自由接案！",
+              effect: { cash: 180 },
+            },
+            {
+              title: "📈 Market Up 股市上漲",
+              message: "Your investments gained value!\n你的投資增值了！",
+              effect: { investmentReturn: 1.2 }, // 投資金額增加 20%
+            },
+          ];
+
+          // 壞事件庫
+          this.badEvents = [
+            {
+              title: "🚨 Phone Scam 電話詐騙",
+              message: "You received a scam call!\n你接到詐騙電話！",
+              effect: { cash: -200 },
+            },
+            {
+              title: "🌀 Typhoon Delay 八號風球",
+              message:
+                "Typhoon signal No.8! Train delayed.\n八號風球！列車延誤。",
+              effect: { moveBack: true },
+            },
+            {
+              title: "🚷 Traffic Fine 交通罰單",
+              message:
+                "You got a traffic violation ticket!\n你收到一張交通罰單！",
+              effect: { cash: -150 },
+            },
+            {
+              title: "📉 Market Down 股市下跌",
+              message: "Stock market crashed!\n股市暴跌！",
+              effect: { investmentReturn: 0.8 }, // 投資金額減少 20%
+            },
+            {
+              title: "🛍️ Impulse Shopping 衝動消費",
+              message:
+                "You spent money on unnecessary items!\n你做了衝動消費！",
+              effect: { cash: -180 },
+            },
+            {
+              title: "🏥 Medical Expense 醫療支出",
+              message: "You had to visit the doctor!\n你需要看醫生！",
+              effect: { cash: -250 },
+            },
+            {
+              title: "📱 Phone Repair 手機維修",
+              message: "Your phone needs repair!\n你的手機需要維修！",
+              effect: { cash: -220 },
+            },
+            {
+              title: "🎮 Gaming Loss 遊戲消費",
+              message: "You spent too much on games!\n你在遊戲上花太多錢！",
+              effect: { cash: -160 },
+            },
+          ];
+
+          // 理財問答題庫
+          this.financeQuestions = [
+            {
+              question: "應該儲蓄至少20%的收入嗎？",
+              correct: true,
+              explanation: "是的！養成儲蓄習慣可以建立穩固的財務基礎。",
+            },
+            {
+              question: "把所有錢投資在一隻股票是明智的嗎？",
+              correct: false,
+              explanation: "不對！應該分散投資以降低風險。",
+            },
+            {
+              question: "應該在大學就開始職涯規劃嗎？",
+              correct: true,
+              explanation: "是的！及早規劃有助於未來發展。",
+            },
+            {
+              question: "借錢買奢侈品是好的財務決定嗎？",
+              correct: false,
+              explanation: "不對！應避免為非必需品負債。",
+            },
+            {
+              question: "應該有3-6個月開支的應急基金嗎？",
+              correct: true,
+              explanation: "是的！應急基金可以應付突發情況。",
+            },
+            {
+              question: "投資時應該追高殺低嗎？",
+              correct: false,
+              explanation: "不對！應該遵循價值投資原則。",
+            },
+            {
+              question: "定期定額投資是好的理財方式嗎？",
+              correct: true,
+              explanation: "是的！可以平均成本，降低市場波動風險。",
+            },
+            {
+              question: "信用卡刷爆換現金是好主意嗎？",
+              correct: false,
+              explanation: "不對！這會導致高額利息支出。",
+            },
+            {
+              question: "投資組合應該定期檢視並調整嗎？",
+              correct: true,
+              explanation: "是的！定期檢視可以確保投資策略符合目標。",
+            },
+            {
+              question: "收入增加時，應該相應提高儲蓄比例嗎？",
+              correct: true,
+              explanation: "是的！避免生活膨脹，優先提高儲蓄。",
+            },
+          ];
+
+          this.initializeGame();
+        }
+
+        getLineFromStation(stationName) {
+          // 優先使用由 connections 推導出的可用路線
+          const lines = gameBoard.getLinesAtStation(stationName);
+          if (lines && lines.length > 0) return lines[0];
+          const station = gameBoard.stations[stationName];
+          return station && station.line ? station.line.split(",")[0] : "twl";
+        }
+
+        initializeGame() {
+          this.updateDisplay();
+          this.drawGameBoard();
+          this.showPlayerAtStation(this.player.currentStation);
+
+          // 在視窗大小改變時重繪地圖線段，確保線段像素長度正確
+          this._resizeHandler = () => this.drawGameBoard();
+          window.addEventListener("resize", this._resizeHandler);
+        }
+
+        nextDay() {
+          if (this.currentDay > this.totalDays) {
+            this.showGameOver();
+            return;
+          }
+
+          // 更新日期和天數
+          this.currentDate.setDate(this.currentDate.getDate() + 1);
+          this.currentDay++;
+
+          // 記錄上一個車站
+          this.previousStation = this.player.currentStation;
+
+          // === 財務計算 ===
+          let dailyReport = [];
+
+          // 1. 強制儲蓄 (第1天$1, 第2天$2, 第3天$3...)
+          const todaySavings = this.currentDay;
+          this.player.assets += todaySavings;
+          this.player.totalSavings += todaySavings;
+          // 累加到累積獲得
+          this.player.cumulativeGains += todaySavings;
+          dailyReport.push(`💰 強制儲蓄: +$${todaySavings}`);
+
+          // 2. 每週零用錢 (每週日發放$300)
+          const isSunday = this.currentDate.getDay() === 0;
+          if (isSunday) {
+            this.player.assets += this.player.weeklyAllowance;
+            // 累積獲得也要計入週薪
+            this.player.cumulativeGains += this.player.weeklyAllowance;
+            dailyReport.push(`🎉 週末零用錢: +$${this.player.weeklyAllowance}`);
+          }
+
+          // 重置每週零用錢標記 (每週一重置)
+          if (this.currentDate.getDay() === 1) {
+            this.player.weeklyAllowanceReceived = false;
+          }
+
+          // 3. 日常開支
+          const isWeekend =
+            this.currentDate.getDay() === 0 || this.currentDate.getDay() === 6;
+          const transportCost = isWeekend ? 10 : 20; // 週末$10, 平日$20
+          const mealCost = 30; // 膳食費$30
+          const dailyExpense = transportCost + mealCost;
+          this.player.assets -= dailyExpense;
+          dailyReport.push(`🚇 交通費: -$${transportCost}`);
+          dailyReport.push(`🍜 膳食費: -$${mealCost}`);
+
+          // 4. 應用物價指數
+          const currentPriceIndex = this.priceIndex[this.player.line] || 1;
+          const inflationEffect = Math.floor(
+            this.player.assets * (currentPriceIndex - 1)
+          );
+          if (inflationEffect !== 0) {
+            this.player.assets = Math.floor(
+              this.player.assets * currentPriceIndex
+            );
+            dailyReport.push(`📈 物價影響: -$${inflationEffect}`);
+          }
+
+          // 顯示日報
+          this.showMessage(
+            `==== 第 ${this.currentDay} 天財務報告 ====\n${dailyReport.join(
+              "\n"
+            )}\n==================\n當前總資產: $${this.player.assets}`
+          );
+
+          // 移動到下一站
+          this.moveToNextStation();
+
+          // 更新顯示
+          this.updateDisplay();
+
+          // 觸發事件
+          this.triggerStationEvent();
+
+          // 檢查通關條件
+          if (this.player.assets >= 10000) {
+            this.showVictory();
+          }
+
+          console.log(
+            `Day ${this.currentDay}: ${this.formatDate(
+              this.currentDate
+            )} | Station: ${this.player.currentStation} | Assets: $${
+              this.player.assets
+            } | Savings: $${todaySavings} | Expense: $${dailyExpense}`
+          );
+        }
+
+        formatDate(date) {
+          const year = date.getFullYear();
+          const month = (date.getMonth() + 1).toString().padStart(2, "0");
+          const day = date.getDate().toString().padStart(2, "0");
+          const weekdays = [
+            "星期日",
+            "星期一",
+            "星期二",
+            "星期三",
+            "星期四",
+            "星期五",
+            "星期六",
+          ];
+          const weekday = weekdays[date.getDay()];
+          return `${year}-${month}-${day} ${weekday}`;
+        }
+
+        moveToNextStation() {
+          const currentLine = this.player.line;
+          // 優先使用該路線的站點序列來決定下一站
+          if (currentLine) {
+            const seq = gameBoard.getLineSequence(currentLine);
+            if (seq && seq.length > 0) {
+              const idx = seq.indexOf(this.player.currentStation);
+              if (idx === -1) {
+                // 如果目前站不在序列中，退回到相鄰站邏輯
+              } else {
+                let nextIdx = idx + (this.player.direction || 1);
+                // 到達終點：反方向
+                if (nextIdx < 0 || nextIdx >= seq.length) {
+                  this.player.direction = -(this.player.direction || 1);
+                  nextIdx = idx + (this.player.direction || 1);
+                }
+
+                const nextStation = seq[nextIdx];
+                if (nextStation) {
+                  this.visitedStations.add(nextStation);
+                  this.stationHistory.push(nextStation);
+                  this.player.currentStation = nextStation;
+                  this.showPlayerAtStation(nextStation);
+                  // 到達換乘站時讓玩家選擇路線
+                  if (gameBoard.isInterchange(nextStation)) {
+                    this.showLineSelection(nextStation);
+                  }
+                  return;
+                }
+              }
+            }
+          }
+
+          // fallback: 使用原本相鄰站選擇邏輯（不依序列）
+          let adjacent = [];
+          if (currentLine) {
+            adjacent = gameBoard.getAdjacentStationsOnLine(
+              this.player.currentStation,
+              currentLine
+            );
+          } else {
+            adjacent = gameBoard.getConnectedStations(
+              this.player.currentStation
+            );
+          }
+
+          if (adjacent.length > 0) {
+            const unvisited = adjacent.filter(
+              (s) => !this.visitedStations.has(s)
+            );
+            let nextStation = null;
+            if (unvisited.length > 0)
+              nextStation =
+                unvisited[Math.floor(Math.random() * unvisited.length)];
+            else
+              nextStation =
+                adjacent[Math.floor(Math.random() * adjacent.length)];
+
+            this.visitedStations.add(nextStation);
+            this.stationHistory.push(nextStation);
+            this.player.currentStation = nextStation;
+            this.showPlayerAtStation(nextStation);
+            if (gameBoard.interchangeStations.includes(nextStation))
+              this.showLineSelection(nextStation);
+          }
+        }
+
+        moveBackStation() {
+          if (this.stationHistory.length > 1) {
+            // 移除當前車站
+            this.stationHistory.pop();
+            // 回到上一個車站
+            const previousStation =
+              this.stationHistory[this.stationHistory.length - 1];
+            this.player.currentStation = previousStation;
+            this.player.line = this.getLineFromStation(previousStation);
+            this.showPlayerAtStation(previousStation);
+            this.updateDisplay();
+          }
+        }
+
+        showLineSelection(station) {
+          // 使用 gameBoard 推導該站可用的路線
+          const availableLines = gameBoard.getLinesAtStation(station);
+
+          const modal = document.getElementById("eventModal");
+          const eventTitle = document.getElementById("eventTitle");
+          const eventMessage = document.getElementById("eventMessage");
+          const eventChoices = document.getElementById("eventChoices");
+
+          eventTitle.textContent = "🔄 轉車站選擇";
+          eventMessage.textContent = `你已到達 ${station}，請選擇要繼續的路線：`;
+          eventChoices.innerHTML = "";
+
+          // 如果只有一條路線，直接設為該線
+          if (!availableLines || availableLines.length === 0) {
+            this.player.currentStation = station;
+            this.player.line = this.getLineFromStation(station);
+            this.showPlayerAtStation(station);
+            return;
+          }
+
+          // 建立每條可選路線按鈕，玩家選擇後將依該線路前進（雙向）
+          availableLines.forEach((line) => {
+            // 建立向前和向後兩個按鈕
+            [-1, 1].forEach((direction) => {
+              const seq = gameBoard.getLineSequence(line);
+              const idx = seq.indexOf(station);
+              // 檢查該方向是否有下一站
+              const nextIdx = idx + direction;
+              if (nextIdx >= 0 && nextIdx < seq.length) {
+                const button = document.createElement("button");
+                button.className = "choice-btn primary";
+                const nextStation = seq[nextIdx];
+                button.textContent = `${this.getLineName(line)} ${
+                  direction > 0 ? "➡️" : "⬅️"
+                } ${nextStation}`;
+                button.onclick = () => {
+                  this.player.currentStation = station;
+                  this.player.line = line;
+                  this.player.direction = direction;
+                  this.showPlayerAtStation(station);
+                  this.updateDisplay();
+                  modal.classList.remove("active");
+                };
+                eventChoices.appendChild(button);
+              }
+            });
+          });
+
+          modal.classList.add("active");
+        }
+
+        getLineName(lineCode) {
+          const lineNames = {
+            twl: "Tsuen Wan Line 荃灣線",
+            tw: "Tuen Ma Line 屯馬線",
+            tcl: "Tung Chung Line 東涌線",
+            erl: "East Rail Line 東鐵線",
+            ktl: "Kwun Tong Line 觀塘線",
+            tkl: "Tseung Kwan O Line 將軍澳線",
+            il: "Island Line 港島線",
+          };
+          return lineNames[lineCode] || lineCode;
+        }
+
+        triggerStationEvent() {
+          const station = this.player.currentStation;
+
+          // 特殊站點（需額外花費的點）
+          // 已刪除與投資站點重複的條目（投資站點會由投資選項控制，不再重複顯示花費選項）
+          const specialEvents = {
+            "Kwai Fong 葵芳": [
+              { text: "逛商場 Mall Shopping", cost: 80 },
+              { text: "在家休息 Stay Home", cost: 40 },
+            ],
+            "Tsim Sha Tsui 尖沙咀": [
+              { text: "高級晚餐 Fine Dining", cost: 80 },
+              { text: "街頭小吃 Street Food", cost: 60 },
+            ],
+            "Yuen Long 元朗": [
+              { text: "市集購物 Market Shopping", cost: 80 },
+              { text: "省錢散步 Cheap Walk", cost: 20 },
+            ],
+            "Sung Wong Toi 宋皇臺": [
+              { text: "拍照留念 Photo", cost: 30 },
+              { text: "快速通過 Skip", cost: 10 },
+            ],
+            "City One 第一城": [
+              { text: "商場購物 Mall", cost: 90 },
+              { text: "咖啡休息 Coffee", cost: 40 },
+            ],
+            "University 大學": [
+              { text: "圖書館自習 Study", cost: 20 },
+              { text: "校園咖啡 Campus Coffee", cost: 50 },
+            ],
+            "Mong Kok East 旺角東": [
+              { text: "商場購物 Mall", cost: 100 },
+              { text: "街道漫步 Walk", cost: 50 },
+            ],
+            "Kwun Tong 觀塘": [
+              { text: "購物 Shopping", cost: 80 },
+              { text: "休閒 Leisure", cost: 30 },
+            ],
+            "Shek Kip Mei 石硤尾": [
+              { text: "小店探險 Explore", cost: 40 },
+              { text: "離開 Leave", cost: 20 },
+            ],
+            "Sheung Wan 上環": [
+              { text: "文青咖啡 Cafe", cost: 70 },
+              { text: "路過 Pass By", cost: 50 },
+            ],
+            "Sunny Bay 欣澳": [
+              { text: "迪士尼遊玩 Disney Visit", cost: 50 },
+              { text: "在附近散步 Walk", cost: 20 },
+            ],
+            "Hang Hau 坑口": [
+              { text: "商場逛街 Mall", cost: 60 },
+              { text: "回家 Home", cost: 30 },
+            ],
+          };
+
+          // 移除原本的幸運站點事件
+
+          // 調整事件概率：好事件:壞事件 = 4:6，總體觸發率 60%
+          const trigger = Math.random();
+          if (trigger < 0.6) {
+            // 60% 機率觸發事件
+            // 在觸發事件時，有 30% 機率跳出理財問答
+            const quizChance = Math.random();
+            if (quizChance < 0.3) {
+              // 30% 機率觸發理財問答
+              this.showFinanceQuiz();
+            } else {
+              const isGoodEvent = Math.random() < 0.4; // 40% 機率是好事件
+              const events = isGoodEvent ? this.goodEvents : this.badEvents;
+              const event = events[Math.floor(Math.random() * events.length)];
+
+              // 處理投資相關事件（將資產更新到 assets）
+              if (event.effect && event.effect.investmentReturn) {
+                if (this.player.investment > 0) {
+                  const returnRate = event.effect.investmentReturn;
+                  const profit = Math.floor(
+                    this.player.investment * (returnRate - 1)
+                  );
+                  // 不直接改變 assets，透過 effect 讓 applyEffect 統一處理，避免重複計算
+                  event.message += `\n投資${
+                    returnRate > 1 ? "收益" : "損失"
+                  }：$${Math.abs(profit)}`;
+                  this.showEvent(event.title, event.message, [], {
+                    cash: profit,
+                  });
+                } else {
+                  // 如果沒有投資，改用一般事件
+                  const defaultEvents = isGoodEvent
+                    ? this.goodEvents.filter(
+                        (e) => !e.effect || !e.effect.investmentReturn
+                      )
+                    : this.badEvents.filter(
+                        (e) => !e.effect || !e.effect.investmentReturn
+                      );
+                  const defaultEvent =
+                    defaultEvents[
+                      Math.floor(Math.random() * defaultEvents.length)
+                    ];
+                  this.showEvent(
+                    defaultEvent.title,
+                    defaultEvent.message,
+                    [],
+                    defaultEvent.effect
+                  );
+                }
+              } else {
+                // 一般事件直接顯示
+                this.showEvent(event.title, event.message, [], event.effect);
+              }
+            }
+          }
+
+          // 指定允許投資的站點清單（由使用者需求提供）
+          const investmentStations = new Set([
+            "Tsuen Wan West 荃灣西",
+            "Shek Mun 石門",
+            "Tsing Yi 青衣",
+            "Kowloon 九龍", // 表示九龍站 / 九龍
+            "Tai Wo Hau 大窩口",
+            "Jordan 佐敦",
+            "Fanling 粉嶺",
+            "Exhibition Centre 會展",
+            "Whampoa 黃埔",
+            "Kowloon Bay 九龍灣",
+            "Sai Ying Pun 西營盤",
+            "Fortress Hill 炮台山",
+            "Po Lam 寶琳",
+          ]);
+
+          // 若是特殊站點或允許投資的站點，顯示可選項目
+          if (specialEvents[station] || investmentStations.has(station)) {
+            const choices = (specialEvents[station] || []).map((choice) => ({
+              text: `${choice.text} - $${choice.cost}`,
+              action: () => {
+                const cost = Math.floor(
+                  choice.cost * (this.priceIndex[this.player.line] || 1)
+                );
+                this.player.assets -= cost;
+                this.showMessage(`花費：$${cost}`);
+                this.updateDisplay();
+              },
+            }));
+
+            if (investmentStations.has(station)) {
+              // 投資選項：$200、$100、或不投資
+              const invest200 = {
+                text: "投資 $200",
+                action: () => {
+                  if (this.player.assets >= 200) {
+                    this.player.assets -= 200;
+                    this.player.investment += 200;
+                    this.player.lastInvestmentDay = this.currentDay;
+                    this.showMessage(
+                      "你投資了 $200。投資可能帶來收益或損失。準備好迎接市場波動吧！"
+                    );
+                    this.updateDisplay();
+                  } else {
+                    this.showMessage("你的資金不足！");
+                  }
+                },
+              };
+
+              const invest100 = {
+                text: "投資 $100",
+                action: () => {
+                  if (this.player.assets >= 100) {
+                    this.player.assets -= 100;
+                    this.player.investment += 100;
+                    this.player.lastInvestmentDay = this.currentDay;
+                    this.showMessage(
+                      "你投資了 $100。投資可能帶來收益或損失。準備好迎接市場波動吧！"
+                    );
+                    this.updateDisplay();
+                  } else {
+                    this.showMessage("你的資金不足！");
+                  }
+                },
+              };
+
+              const noInvest = {
+                text: "不投資",
+                action: () => {
+                  this.showMessage("你選擇不投資。");
+                },
+              };
+
+              choices.push(invest200, invest100, noInvest);
+            }
+
+            // 若沒有選項時不顯示
+            if (choices.length > 0) {
+              this.showEvent(
+                `🎯 特別地點 ${station}`,
+                `你來到 ${station}，選擇一項活動：`,
+                choices
+              );
+            }
+          }
+        }
+
+        showFinanceQuiz() {
+          const question =
+            this.financeQuestions[
+              Math.floor(Math.random() * this.financeQuestions.length)
+            ];
+          this.showEvent("💡 Financial Quiz 理財問答", question.question, [
+            {
+              text: "Yes 是",
+              action: () => {
+                if (question.correct) {
+                  this.showMessage(
+                    `Correct! ${question.explanation}\nYou move forward!\n答對了！${question.explanation}\n你前進一步！`
+                  );
+                  // 答對前進一步
+                  this.moveToNextStation();
+                } else {
+                  this.showMessage(
+                    `Wrong! ${question.explanation}\nYou move back!\n答錯了！${question.explanation}\n你後退一步！`
+                  );
+                  // 答錯後退一步
+                  this.moveBackStation();
+                }
+                this.updateDisplay();
+              },
+            },
+            {
+              text: "No 否",
+              action: () => {
+                if (!question.correct) {
+                  this.showMessage(
+                    `Correct! ${question.explanation}\nYou move forward!\n答對了！${question.explanation}\n你前進一步！`
+                  );
+                  // 答對前進一步
+                  this.moveToNextStation();
+                } else {
+                  this.showMessage(
+                    `Wrong! ${question.explanation}\nYou move back!\n答錯了！${question.explanation}\n你後退一步！`
+                  );
+                  // 答錯後退一步
+                  this.moveBackStation();
+                }
+                this.updateDisplay();
+              },
+            },
+          ]);
+        }
+
+        showEvent(title, message, choices = [], effect = null) {
+          const modal = document.getElementById("eventModal");
+          const emoji = document.getElementById("eventEmoji");
+          const titleEl = document.getElementById("eventTitle");
+          const messageEl = document.getElementById("eventMessage");
+          const choicesEl = document.getElementById("eventChoices");
+
+          // 設置事件內容
+          emoji.textContent = title.includes("Lucky")
+            ? "🍀"
+            : title.includes("Quiz")
+            ? "💡"
+            : title.includes("Scam")
+            ? "🚨"
+            : "🎯";
+          titleEl.textContent = title;
+          messageEl.textContent = message;
+
+          // 清空選擇按鈕
+          choicesEl.innerHTML = "";
+
+          // 添加選擇按鈕
+          choices.forEach((choice) => {
+            const button = document.createElement("button");
+            button.className = "choice-btn primary";
+            button.textContent = choice.text;
+            button.onclick = () => {
+              choice.action();
+              modal.classList.remove("active");
+            };
+            choicesEl.appendChild(button);
+          });
+
+          // 如果沒有選擇，添加確定按鈕
+          if (choices.length === 0) {
+            const confirmBtn = document.createElement("button");
+            confirmBtn.className = "choice-btn primary";
+            confirmBtn.textContent = "OK 確定";
+            confirmBtn.onclick = () => {
+              if (effect) {
+                this.applyEffect(effect);
+              }
+              modal.classList.remove("active");
+            };
+            choicesEl.appendChild(confirmBtn);
+          }
+
+          // 顯示彈窗
+          modal.classList.add("active");
+        }
+
+        applyEffect(effect) {
+          if (effect.cash) {
+            this.player.assets += effect.cash;
+            // 如果是正向獲得，加入到累積獲得
+            if (effect.cash > 0) {
+              this.player.cumulativeGains += effect.cash;
+            }
+            this.showMessage(
+              `${effect.cash > 0 ? "Gained" : "Lost"} $${Math.abs(
+                effect.cash
+              )}!\n${effect.cash > 0 ? "獲得" : "損失"}$${Math.abs(
+                effect.cash
+              )}！`
+            );
+          }
+          if (effect.moveBack) {
+            this.moveBackStation();
+            this.showMessage(
+              "You moved back one station due to typhoon delay!\n因颱風延誤，你後退了一步！"
+            );
+          }
+          this.updateDisplay();
+        }
+
+        showMessage(message) {
+          alert(message);
+        }
+
+        updateDisplay() {
+          // 更新頭部信息
+          document.getElementById("displayNickname").textContent =
+            this.player.name;
+          document.getElementById("displayStudentId").textContent =
+            this.studentId;
+          document.getElementById("currentDay").textContent = this.currentDay;
+          document.getElementById("currentDate").textContent = this.formatDate(
+            this.currentDate
+          );
+          document.getElementById("currentStation").textContent = `${
+            this.player.currentStation
+          } (${this.getLineName(this.player.line)})`;
+          // 總資產定義為：目前持有現金 + 目前投資金額 + 累積儲蓄
+          const currentCash = this.player.assets || 0;
+          const totalInvestment = this.player.investment || 0;
+          const totalSavings = this.player.totalSavings || 0;
+          const computedTotalAssets =
+            currentCash + totalInvestment + totalSavings;
+          document.getElementById("totalAssets").textContent =
+            computedTotalAssets.toLocaleString();
+          document.getElementById("dailySavings").textContent = this.currentDay;
+
+          // 更新玩家資訊面板
+          document.getElementById(
+            "infoTotalAssets"
+          ).textContent = `$${computedTotalAssets.toLocaleString()}`;
+          document.getElementById(
+            "infoCurrentDay"
+          ).textContent = `第 ${this.currentDay} 天`;
+          document.getElementById("infoCurrentStation").textContent =
+            this.player.currentStation;
+          document.getElementById("infoPriceIndex").textContent = (
+            this.priceIndex[this.player.line] || 1
+          ).toFixed(3);
+          document.getElementById(
+            "infoDailySavings"
+          ).textContent = `$${this.currentDay}`;
+          document.getElementById(
+            "infoTotalSavings"
+          ).textContent = `$${this.player.totalSavings.toLocaleString()}`;
+          // 顯示總投資
+          document.getElementById(
+            "infoTotalInvestment"
+          ).textContent = `$${totalInvestment.toLocaleString()}`;
+          // 顯示累積獲得
+          document.getElementById("infoCumulativeGains").textContent = `$${(
+            this.player.cumulativeGains || 0
+          ).toLocaleString()}`;
+        }
+
+        drawGameBoard() {
+          const mapContainer = document.getElementById("railway-map");
+          mapContainer.innerHTML = "";
+
+          // 建立一個 SVG 作為線段繪製的畫布
+          const svgNS = "http://www.w3.org/2000/svg";
+          const svg = document.createElementNS(svgNS, "svg");
+          svg.setAttribute("class", "rail-lines-svg");
+          svg.setAttribute("width", "100%");
+          svg.setAttribute("height", "100%");
+          svg.style.position = "absolute";
+          svg.style.left = "0";
+          svg.style.top = "0";
+          svg.style.zIndex = "1";
+
+          // 繪製車站標記容器 (置於 SVG 之上)
+          const stationsDiv = document.createElement("div");
+          stationsDiv.className = "stations";
+
+          // 幫助函數: 從百分比座標換算到像素位置 (相對於 mapContainer)
+          const getPixelPos = (pctX, pctY) => {
+            const rect = mapContainer.getBoundingClientRect();
+            const x = (pctX / 100) * rect.width;
+            const y = (pctY / 100) * rect.height;
+            return { x, y };
+          };
+
+          // 先繪製所有 station 元素（以便之後可用 name 查找）
+          Object.entries(gameBoard.stations).forEach(([name, info]) => {
+            const station = document.createElement("div");
+            station.className = `station-marker ${
+              name === this.player.currentStation ? "current" : ""
+            }`;
+            station.style.left = `${info.x}%`;
+            station.style.top = `${info.y}%`;
+            station.innerHTML = `
+                        <div class="station-dot"></div>
+                        <div class="station-name">${name}</div>
+                    `;
+            stationsDiv.appendChild(station);
+          });
+
+          // 繪製線段 (使用 SVG line，採用像素座標以確保精準長度)
+          gameBoard.connections.forEach((conn) => {
+            const fromStation = gameBoard.getStation(conn.from);
+            const toStation = gameBoard.getStation(conn.to);
+
+            if (fromStation && toStation) {
+              const p1 = getPixelPos(fromStation.x, fromStation.y);
+              const p2 = getPixelPos(toStation.x, toStation.y);
+
+              const line = document.createElementNS(svgNS, "line");
+              line.setAttribute("x1", p1.x);
+              line.setAttribute("y1", p1.y);
+              line.setAttribute("x2", p2.x);
+              line.setAttribute("y2", p2.y);
+              line.setAttribute(
+                "stroke",
+                gameBoard.lineColors[conn.line] || "#666"
+              );
+              line.setAttribute("stroke-width", 8);
+              line.setAttribute("stroke-linecap", "round");
+              line.style.transition = "opacity 0.3s ease";
+
+              svg.appendChild(line);
+            }
+          });
+
+          mapContainer.appendChild(svg);
+          mapContainer.appendChild(stationsDiv);
+        }
+
+        showPlayerAtStation(stationName) {
+          const playerIcon = document.getElementById("player-icon");
+          const station = gameBoard.getStation(stationName);
+
+          if (station && playerIcon) {
+            playerIcon.style.left = `${station.x}%`;
+            playerIcon.style.top = `${station.y}%`;
+            playerIcon.style.display = "block";
+
+            // 更新車站標記
+            document.querySelectorAll(".station-marker").forEach((marker) => {
+              marker.classList.remove("current");
+            });
+            document.querySelectorAll(".station-marker").forEach((marker) => {
+              if (
+                marker.querySelector(".station-name").textContent ===
+                stationName
+              ) {
+                marker.classList.add("current");
+              }
+            });
+          }
+        }
+
+        // 發送遊戲數據到 Google Forms
+        async sendGameData(status) {
+          const formData = new FormData();
+          formData.append("entry.1", this.studentId); // 學生ID
+          formData.append("entry.2", this.player.name); // 玩家暱稱
+          formData.append("entry.3", status); // 遊戲狀態（勝利/結束）
+          formData.append("entry.4", this.currentDay.toString()); // 遊戲天數
+          formData.append("entry.5", this.player.totalSavings.toString()); // 總儲蓄
+          formData.append("entry.6", this.player.investment.toString()); // 總投資
+          formData.append("entry.7", this.player.assets.toString()); // 當前資產
+          formData.append("entry.8", new Date().toISOString()); // 遊戲時間
+
+          try {
+            // 這裡需要替換為你的 Google Forms URL
+            const response = await fetch("YOUR_GOOGLE_FORM_URL", {
+              method: "POST",
+              mode: "no-cors",
+              body: formData,
+            });
+            console.log("Data sent successfully");
+          } catch (error) {
+            console.error("Error sending data:", error);
+          }
+        }
+
+        showVictory() {
+          // 發送勝利數據
+          this.sendGameData("victory");
+
+          this.showEvent(
+            "🎉 恭喜！",
+            `恭喜，您成功儲到你的第一桶金 $10,000！🎉\n\n遊戲天數：第 ${this.currentDay} 天\n累積儲蓄：$${this.player.totalSavings}\n目前資產：$${this.player.assets}`,
+            [
+              {
+                text: "Play Again 再玩一次",
+                action: () => location.reload(),
+              },
+            ]
+          );
+        }
+
+        showGameOver() {
+          // 發送遊戲結束數據
+          this.sendGameData("gameover");
+
+          this.showEvent(
+            "⏰ Game Over 遊戲結束",
+            `365 days have passed! Your final assets: $${this.player.assets}\n365天過去了！你的最終資產：$${this.player.assets}\nTotal Savings 總儲蓄: $${this.player.totalSavings}`,
+            [
+              {
+                text: "Play Again 再玩一次",
+                action: () => location.reload(),
+              },
+            ]
+          );
+        }
+      }
+
+      // 遊戲初始化
+      let game;
+
+      document.getElementById("startGameBtn").onclick = function () {
+        const studentId = document.getElementById("studentId").value.trim();
+        const nickname = document.getElementById("playerNickname").value.trim();
+
+        if (!studentId || !nickname) {
+          alert("Please fill in all information! 請填寫所有信息！");
+          return;
+        }
+
+        // 切換到遊戲頁面
+        document.getElementById("login-page").classList.remove("active");
+        document.getElementById("game-page").classList.add("active");
+
+        // 初始化遊戲
+        game = new FinanceGame(studentId, nickname);
+      };
+
+      document.getElementById("nextDayBtn").onclick = function () {
+        if (game) {
+          game.nextDay();
+        }
+      };
+
+      document.getElementById("newGameBtn").onclick = function () {
+        location.reload();
+      };
+
+      // 關閉事件彈窗的點擊事件
+      document.getElementById("eventModal").onclick = function (e) {
+        if (e.target === this) {
+          this.classList.remove("active");
+        }
+      };
+    </script>
+  </body>
+</html>
